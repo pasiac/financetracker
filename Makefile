@@ -9,4 +9,4 @@ linters:
 	sh -c "isort --skip-glob=.tox --recursive . "
 	sh -c "black ."
 venv:
-	sh -c "source $HOME/foodenv/bin/activate"
+	sh -c "source $HOME/wydatkienv/bin/activate"
