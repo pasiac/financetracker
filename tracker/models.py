@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
-
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
@@ -12,7 +10,7 @@ class Category(models.Model):
 class IncomeOutcome(models.Model):
     title = models.CharField(max_length=30)
     value = models.DecimalField(decimal_places=2, max_digits=8)
-    time = models.DateField()
+    date = models.DateTimeField(auto_now_add=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
 
