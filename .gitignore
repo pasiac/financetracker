@@ -1,5 +1,7 @@
  Byte-compiled / optimized / DLL files
 __pycache__/
+/__pycache__/
+__pycache__/
 *.py[cod]
 
 *.sqlite3
@@ -51,4 +53,5 @@ coverage.xml
 *.pot
 
 # Sphinx documentation
+media/
 docs/_build/
