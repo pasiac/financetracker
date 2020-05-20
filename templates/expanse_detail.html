@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Wydatkownia - Wydatek{% endblock %}
+{% block body %}
+    <h1>Szczegolowy widok wydatku {{expanse.title}}</h1>
+    {{ message }}
+    {% for key, value in expanse.get_dict.items %}
+        <p>{{ key }} {{ value }}</p>
+    {% endfor %}
+    <a href="{% url 'delete_expanse' expanse.id %}">Usun</a>
+    <a href="zaslepka">Edytuj</a>
+    <a href="zaslepka">Podziel</a>
+{% endblock %}
