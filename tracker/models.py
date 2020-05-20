@@ -14,6 +14,14 @@ class IncomeOutcome(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
 
+    def get_dict(self):
+        return {
+            "title": self.title,
+            "value": self.value,
+            "date": self.date,
+            "category": self.category,
+        }
+
 
 class Chart(models.Model):
     title = models.CharField(max_length=30)
