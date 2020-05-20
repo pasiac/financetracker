@@ -3,17 +3,9 @@ import os
 from django.conf.global_settings import STATIC_ROOT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "=y#15_$8u9mm_iozl8b+*+@1lao-l&xy!rn9($xcy9^*zwgt23"
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -46,7 +38,7 @@ ROOT_URLCONF = "urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [(PROJECT_PATH + "/templates/"),],
+        "DIRS": [(BASE_DIR + "/templates/"),],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
