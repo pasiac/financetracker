@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 
+from .forms import AddCategoryForm, AddExpanseForm
 from .models import IncomeOutcome
 
 
@@ -33,7 +34,24 @@ def delete_expanse(request, expanse_id):
     return redirect("expanses_list")
 
 
-# def add_expanse(request):
+def add_expanse(request):
+    if request.method == "POST":
+        form = AddExpanseForm(request.POST)
+        if form.is_valid():
+            return redirect("expanses_list")
+    else:
+        form = AddExpanseForm()
+    return render(request, "add_expanse.html", {"form": form})
+
+
+def add_category(request):
+    if request.method == "POST":
+        form = AddCategoryForm(request.POST)
+        if form.is_valid():
+            return redirect("expanses_list")
+    else:
+        form = AddCategoryForm()
+    return render(request, "add_category.html", {"form": form})
 
 
 # def edit_expanse(request, expanse_id):
