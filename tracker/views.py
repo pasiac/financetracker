@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
-from .models import IncomeOutcome
+from .models import IncomeOutcome, Category
 
 
 def index(request):
@@ -38,6 +38,10 @@ def add_expanse(request):
     if request.method == "POST":
         form = AddExpanseForm(request.POST)
         if form.is_valid():
+            data = form.cleaned_data
+            data.update({"user": request.user})
+            expanse = IncomeOutcome(**data)
+            expanse.save()
             return redirect("expanses_list")
     else:
         form = AddExpanseForm()
@@ -48,10 +52,25 @@ def add_category(request):
     if request.method == "POST":
         form = AddCategoryForm(request.POST)
         if form.is_valid():
+            data = form.cleaned_data
+            data.update({"user": request.user})
+            category = Category(**data)
+            category.save()
             return redirect("expanses_list")
     else:
         form = AddCategoryForm()
     return render(request, "add_category.html", {"form": form})
+
+
+def categories_list(request):
+    if request.user.is_authenticated:
+        categories = Category.objects.filter(user=request.user)
+        context = {"categories": categories}
+    else:
+        context = {"message": "Zaloguj sie, zeby przegladac swoje kategorie"}
+    return render(request, "categories_list.html", context)
+
+
 
 
 # def edit_expanse(request, expanse_id):

@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
-    <h1>Twoje wydatki</h1>
+    <h1>Twoje wydatki</h1>   
     {{ message }}
+    <a href="{% url 'add_expanse' %}">Dodaj wydatek</a>
+    <br><br>
     {% for expanse in expanses %}
-        <a href="{% url 'expanse_detail' expanse.id %}">{{ expanse.title }}</a>  {{ expanse.value }}
+        <a href="{% url 'expanse_detail' expanse.id %}">{{ expanse.title }}</a>  {{ expanse.value }}<br>
     {% endfor %}
+    <br><br><br><br>  
+    <a href="{% url 'categories_list' %}">Kategorie</a>
 {% endblock %}

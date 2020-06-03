@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Wydatkownia - Kategorie{% endblock %}
+{% block body %}
+    <h1>Twoje kategorie</h1>
+    {{ message }}
+    <a href="{% url 'add_category' %}">Dodaj kategorie</a>
+    {% for category in categories %}
+        {{ category.name }}
+    {% endfor %}
+{% endblock %}

@@ -9,4 +9,6 @@ urlpatterns = [
     path("usun-wydatek/<expanse_id>", views.delete_expanse, name="delete_expanse"),
     path("dodaj-wydatek", views.add_expanse, name="add_expanse"),
     path("dodaj-kategorie", views.add_category, name="add_category"),
+    path("kategorie", views.categories_list, name="categories_list"),
+
 ]
