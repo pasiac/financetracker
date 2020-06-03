@@ -7,5 +7,5 @@
         <a href="{% url 'expanse_detail' expanse.id %}">{{ expanse.title }}</a>  {{ expanse.value }}<br>
     {% endfor %}
     <br><br><br><br>
-    <a href="zaslepka">Edytuj</a>
+    <a href="{% url 'edit_category' category.id %}">Edytuj</a>
 {% endblock %}

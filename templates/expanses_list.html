@@ -2,7 +2,7 @@
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
     <h1>Twoje wydatki</h1>   
-    {{ message }}
+    {{ message }}<br>
     <a href="{% url 'add_expanse' %}">Dodaj wydatek</a>
     <br><br>
     {% for expanse in expanses %}

@@ -53,7 +53,6 @@ def add_expanse(request):
 
 def edit_expanse(request, expanse_id):
     expanse = get_object_or_404(IncomeOutcome, id=expanse_id)
-    print(expanse)
     form = AddExpanseForm(request.POST or None, instance=expanse)
     if form.is_valid():
         form.save()
@@ -96,3 +95,12 @@ def category_detail(request, category_id):
     else:
         context = {"message": "Zaloguj sie, zeby przegladac ta zawartosc"}
     return render(request, "category_detail.html", context)
+
+
+def edit_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    form = AddCategoryForm(request.POST or None, instance=category)
+    if form.is_valid():
+        form.save()
+        return redirect("categories_list")
+    return render(request, "add_category.html", {"form": form})
