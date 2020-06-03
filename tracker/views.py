@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
 from .models import Category, IncomeOutcome
@@ -48,6 +48,16 @@ def add_expanse(request):
             return redirect("expanses_list")
     else:
         form = AddExpanseForm()
+    return render(request, "add_expanse.html", {"form": form})
+
+
+def edit_expanse(request, expanse_id):
+    expanse = get_object_or_404(IncomeOutcome, id=expanse_id)
+    print(expanse)
+    form = AddExpanseForm(request.POST or None, instance=expanse)
+    if form.is_valid():
+        form.save()
+        return redirect("expanses_list")
     return render(request, "add_expanse.html", {"form": form})
 
 
