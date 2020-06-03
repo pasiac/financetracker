@@ -3,8 +3,8 @@
 {% block body %}
     <h1>Twoje kategorie</h1>
     {{ message }}
-    <a href="{% url 'add_category' %}">Dodaj kategorie</a>
+    <a href="{% url 'add_category' %}">Dodaj kategorie</a><br>
     {% for category in categories %}
-        {{ category.name }}
+        <a href="{% url 'category_detail' category.id %}">{{ category.name }}<br>
     {% endfor %}
 {% endblock %}

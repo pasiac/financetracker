@@ -4,7 +4,9 @@
     <h1>Szczegolowy widok wydatku {{expanse.title}}</h1>
     {{ message }}
     {% for key, value in expanse.get_dict.items %}
-        <p>{{ key }} {{ value }}</p>
+        {% if value %}
+            <p>{{ key }} {{ value }}</p>
+        {% endif%}
     {% endfor %}
     <a href="{% url 'delete_expanse' expanse.id %}">Usun</a>
     <a href="zaslepka">Edytuj</a>

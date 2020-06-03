@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Wydatkownia - Kategoria{% endblock %}
+{% block body %}
+    <h1>Szczegolowy widok kategory {{category.name}}</h1>
+    {{ message }}
+    {% for expanse in expanses_list %}
+        <a href="{% url 'expanse_detail' expanse.id %}">{{ expanse.title }}</a>  {{ expanse.value }}<br>
+    {% endfor %}
+    <br><br><br><br>
+    <a href="zaslepka">Edytuj</a>
+{% endblock %}

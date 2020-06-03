@@ -1,10 +1,15 @@
 from django import forms
 
-
-class AddExpanseForm(forms.Form):
-    title = forms.CharField(label="Nazwa")
-    value = forms.DecimalField(label="Kwota")
+from .models import Category, IncomeOutcome
 
 
-class AddCategoryForm(forms.Form):
-    name = forms.CharField(label="Nazwa")
+class AddExpanseForm(forms.ModelForm):
+    class Meta:
+        model = IncomeOutcome
+        fields = ["title", "value", "category"]
+
+
+class AddCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name"]

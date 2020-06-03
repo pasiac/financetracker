@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
-from .models import IncomeOutcome, Category
+from .models import Category, IncomeOutcome
 
 
 def index(request):
@@ -26,6 +27,7 @@ def expanse_detail(request, expanse_id):
     return render(request, "expanse_detail.html", context)
 
 
+@login_required
 def delete_expanse(request, expanse_id):
     expanse = IncomeOutcome.objects.get(id=expanse_id)
     title = expanse.title
@@ -34,6 +36,7 @@ def delete_expanse(request, expanse_id):
     return redirect("expanses_list")
 
 
+@login_required
 def add_expanse(request):
     if request.method == "POST":
         form = AddExpanseForm(request.POST)
@@ -48,6 +51,7 @@ def add_expanse(request):
     return render(request, "add_expanse.html", {"form": form})
 
 
+@login_required
 def add_category(request):
     if request.method == "POST":
         form = AddCategoryForm(request.POST)
@@ -56,12 +60,13 @@ def add_category(request):
             data.update({"user": request.user})
             category = Category(**data)
             category.save()
-            return redirect("expanses_list")
+            return redirect("categories_list")
     else:
         form = AddCategoryForm()
     return render(request, "add_category.html", {"form": form})
 
 
+@login_required
 def categories_list(request):
     if request.user.is_authenticated:
         categories = Category.objects.filter(user=request.user)
@@ -71,7 +76,13 @@ def categories_list(request):
     return render(request, "categories_list.html", context)
 
 
-
-
-# def edit_expanse(request, expanse_id):
-#     expanse = IncomeOutcome.objects.get(id=expanse_id)
+def category_detail(request, category_id):
+    if request.user.is_authenticated:
+        category = Category.objects.get(id=category_id)
+        expanses_list = IncomeOutcome.objects.filter(
+            user=request.user, category=category
+        )
+        context = {"expanses_list": expanses_list, "category": category}
+    else:
+        context = {"message": "Zaloguj sie, zeby przegladac ta zawartosc"}
+    return render(request, "category_detail.html", context)

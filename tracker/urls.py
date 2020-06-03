@@ -10,5 +10,5 @@ urlpatterns = [
     path("dodaj-wydatek", views.add_expanse, name="add_expanse"),
     path("dodaj-kategorie", views.add_category, name="add_category"),
     path("kategorie", views.categories_list, name="categories_list"),
-
+    path("kategoria/<category_id>", views.category_detail, name="category_detail"),
 ]
