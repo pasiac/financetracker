@@ -23,10 +23,11 @@ def expanses_list(request):
 def expanse_detail(request, expanse_id):
     if request.user.is_authenticated:
         all_user_expanses = IncomeOutcome.objects.filter(user=request.user)
-        all_expanses_value = __calculate_total_value(all_user_expanses)
         expanse = IncomeOutcome.objects.get(id=expanse_id)
-        all_expanses_value -= expanse.value
-        chart_data = [float(all_expanses_value), float(expanse.value)]
+        all_expanses_value = __calculate_total_value(all_user_expanses) - float(
+            expanse.value
+        )
+        chart_data = [round(all_expanses_value, 2), round(float(expanse.value), 2)]
         chart_label = ["Wszystkie", expanse.title]
         context = {
             "expanse": expanse,
@@ -99,18 +100,27 @@ def categories_list(request):
 def category_detail(request, category_id):
     if request.user.is_authenticated:
         category = Category.objects.get(id=category_id)
-        expanses_list = IncomeOutcome.objects.filter(
+        category_expanses_list = IncomeOutcome.objects.filter(
             user=request.user, category=category
         )
-        all_expanses_list = IncomeOutcome.objects.filter(user=request.user)
-        context = {"expanses_list": expanses_list, "category": category}
+        all_expanses = IncomeOutcome.objects.filter(user=request.user)
+        category_value = __calculate_total_value(category_expanses_list)
+        total_value = __calculate_total_value(all_expanses) - category_value
+        chart_data = [round(total_value, 2), round(category_value, 2)]
+        chart_label = ["Inne kategorie", category.name]
+        context = {
+            "expanses_list": category_expanses_list,
+            "category": category,
+            "chart_data": chart_data,
+            "chart_label": chart_label,
+        }
     else:
         context = {"message": "Zaloguj sie, zeby przegladac ta zawartosc"}
     return render(request, "category_detail.html", context)
 
 
 def __calculate_total_value(expanse_list: List[IncomeOutcome]) -> float:
-    return sum(expanse.value for expanse in expanse_list)
+    return round(sum(float(expanse.value) for expanse in expanse_list), 2)
 
 
 def edit_category(request, category_id):
