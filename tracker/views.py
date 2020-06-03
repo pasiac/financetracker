@@ -1,3 +1,5 @@
+from typing import List
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -20,8 +22,17 @@ def expanses_list(request):
 
 def expanse_detail(request, expanse_id):
     if request.user.is_authenticated:
+        all_user_expanses = IncomeOutcome.objects.filter(user=request.user)
+        all_expanses_value = __calculate_total_value(all_user_expanses)
         expanse = IncomeOutcome.objects.get(id=expanse_id)
-        context = {"expanse": expanse}
+        all_expanses_value -= expanse.value
+        chart_data = [float(all_expanses_value), float(expanse.value)]
+        chart_label = ["Wszystkie", expanse.title]
+        context = {
+            "expanse": expanse,
+            "chart_data": chart_data,
+            "chart_label": chart_label,
+        }
     else:
         context = {"message": "Zaloguj sie, zeby przegladac swoje wydatki"}
     return render(request, "expanse_detail.html", context)
@@ -91,10 +102,15 @@ def category_detail(request, category_id):
         expanses_list = IncomeOutcome.objects.filter(
             user=request.user, category=category
         )
+        all_expanses_list = IncomeOutcome.objects.filter(user=request.user)
         context = {"expanses_list": expanses_list, "category": category}
     else:
         context = {"message": "Zaloguj sie, zeby przegladac ta zawartosc"}
     return render(request, "category_detail.html", context)
+
+
+def __calculate_total_value(expanse_list: List[IncomeOutcome]) -> float:
+    return sum(expanse.value for expanse in expanse_list)
 
 
 def edit_category(request, category_id):
