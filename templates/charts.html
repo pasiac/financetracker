@@ -1,22 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Wydatkownia - Wydatek{% endblock %}
+{% block title %}Wydatkownia - Strona glowna{% endblock %}
 {% block body %}
-    <h1>Szczegolowy widok wydatku {{expanse.title}}</h1>
-    {{ message }}
-    {% for key, value in expanse.get_dict.items %}
-        {% if value %}
-            <p>{{ key }}: {{ value }}</p>
-        {% endif%}
-    {% endfor %}
-
     <div id="container" style="width: 75%;">
-        <canvas id="pie-chart"></canvas>
+        <canvas id="bar-chart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
     <script>
+        var date = {{ chart_label|safe }}
         var config = {
-        type: 'pie',
+        type: 'bar',
         data: {
             datasets: [{
             data: {{ chart_data|safe }},
@@ -33,14 +26,9 @@
         };
 
         window.onload = function() {
-        var ctx = document.getElementById('pie-chart').getContext('2d');
+        var ctx = document.getElementById('bar-chart').getContext('2d');
         window.myPie = new Chart(ctx, config);
         };
 
     </script>
-
-    <a href="{% url 'delete_expanse' expanse.id %}">Usun</a>
-    <a href="{% url 'edit_expanse' expanse.id %}">Edytuj</a>
-
-    <a href="zaslepka">Podziel</a>
 {% endblock %}

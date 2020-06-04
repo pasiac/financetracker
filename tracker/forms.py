@@ -6,7 +6,11 @@ from .models import Category, IncomeOutcome
 class AddExpanseForm(forms.ModelForm):
     class Meta:
         model = IncomeOutcome
-        fields = ["title", "value", "category"]
+        fields = [
+            "title",
+            "value",
+            "category",
+        ]
 
 
 class AddCategoryForm(forms.ModelForm):
