@@ -53,7 +53,7 @@ def delete_expanse(request, expanse_id):
 @login_required
 def add_expanse(request):
     if request.method == "POST":
-        form = AddExpanseForm(request.POST)
+        form = AddExpanseForm(data=request.POST, request=request)
         if form.is_valid():
             data = form.cleaned_data
             data.update({"user": request.user})
@@ -61,13 +61,13 @@ def add_expanse(request):
             expanse.save()
             return redirect("expanses_list")
     else:
-        form = AddExpanseForm()
+        form = AddExpanseForm(request=request)
     return render(request, "add_expanse.html", {"form": form})
 
 
 def edit_expanse(request, expanse_id):
     expanse = get_object_or_404(IncomeOutcome, id=expanse_id)
-    form = AddExpanseForm(request.POST or None, instance=expanse)
+    form = AddExpanseForm(data=request.POST or None, instance=expanse, request=request)
     if form.is_valid():
         form.save()
         return redirect("expanses_list")
@@ -132,6 +132,13 @@ def edit_category(request, category_id):
         form.save()
         return redirect("categories_list")
     return render(request, "add_category.html", {"form": form})
+
+
+@login_required
+def delete_category(request, category_id):
+    expanse = Category.objects.get(id=category_id)
+    expanse.delete()
+    return redirect("categories_list")
 
 
 # def charts(request):

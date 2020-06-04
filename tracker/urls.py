@@ -13,5 +13,6 @@ urlpatterns = [
     path("kategoria/<category_id>", views.category_detail, name="category_detail"),
     path("edytuj-wydatek/<expanse_id>", views.edit_expanse, name="edit_expanse"),
     path("edytuj-kategorie/<category_id>", views.edit_category, name="edit_category"),
+    path("usun-kategorie/<category_id>", views.delete_category, name="delete_category"),
     # path("wykresy", views.charts, name="charts"),
 ]
