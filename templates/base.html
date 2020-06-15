@@ -14,10 +14,9 @@
           <nav>
             <a href="/">Home</a>
             <a href="{% url 'expanses_list' %}">Wydatki</a>
-            <a href="#">Wykresy</a>
             <div class="logging-in">
             {% if user.is_authenticated %}
-                <a href="#"> {{ user.username }}</a>
+                {{ user.username }}
                 <a href="{% url 'logout' %}">logout</a>
             {% else %}
                 <a href="{% url 'login' %}">Login</a>

@@ -1,3 +1,4 @@
+import csv
 import datetime
 from calendar import monthrange
 from datetime import timedelta
@@ -141,38 +142,8 @@ def delete_category(request, category_id):
     return redirect("categories_list")
 
 
-# def charts(request):
-#     expanses = IncomeOutcome.objects.filter(user=request.user, date=datetime.date.today().month).order_by('date')
-#     chart_data, chart_label = __prepare_chart(expanses)
-#     print(chart_data)
-#     print(chart_label)
-#     context = {
-#         "chart_data": chart_data,
-#         "chart_label": chart_label,
-#     }
-#     return render(request, "charts.html", context)
-
-
-# def __prepare_chart(expanses: List[IncomeOutcome]) -> dict:
-#     temp = expanses[0].date
-#     chart_data = []
-#     chart_label = []
-#     chart_label.append(temp)
-#     sum = 0
-#     counter = 0
-#     days_counter = 0
-#     for expanse in expanses:
-#         if days_counter == 10:
-#             return chart_data, chart_label
-#         if temp.day == expanse.date.day:
-#             counter += 1
-#             sum += expanse.value
-#         else:
-#             if temp not in chart_label:
-#                 chart_label.append(temp)
-#                 days_counter += 1
-#             if counter != 0:
-#                 chart_data.append(sum)
-#                 counter = 0
-#                 sum = 0
-#             temp = temp + timedelta(days=1)
+# def generate_csv(request):
+#     expanses = IncomeOutcome.objects.filter(user=request.user)
+#     with open('raport.csv', 'w', newline='') as csvfile:
+#         writer = csv.writer(csvfile, delimeter=',')
+#         writer.writerow(['title', 'value', 'date', 'category'])
