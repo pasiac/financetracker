@@ -5,7 +5,12 @@
     {{ message }}
     {% for key, value in expanse.get_dict.items %}
         {% if value %}
-            <p>{{ key }}: {{ value }}</p>
+            {% if key == "recipe" %}
+                {% load static %}
+                <img src="{{value.url}}" class="img-responsive" style="width: 50%; float: left; margin-right: 10px;" />>
+            {% else %}    
+                <p>{{ key }}: {{ value }}</p>
+            {% endif %}
         {% endif%}
     {% endfor %}
 
