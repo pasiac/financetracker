@@ -3,7 +3,6 @@
 {% block body %}
     <h1>Yours expanses</h1>   
     {{ message }}<br> 
-    <br><br>
     <div class="list-group">
         {% for expanse in expanses %}
             <a href="{% url 'expanse_detail' expanse.id %}" class="list-group-item list-group-item-action">{{ expanse.title }}   {{ expanse.value }}</a>
@@ -12,4 +11,22 @@
     <br>
     <a href="{% url 'add_expanse' %}" class="btn btn-primary">Add expanse</a>
     <a href="{% url 'generate_csv' %}" class="btn btn-primary">CSV</a>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}

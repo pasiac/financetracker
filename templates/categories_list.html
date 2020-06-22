@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Kategorie{% endblock %}
 {% block body %}
-    <h1>Twoje kategorie</h1>
+    <h1>Yours categories</h1>
     {{ message }}<br>
     <div class="list-group">
         {% for category in categories %}
             <a href="{% url 'category_detail' category.id %}"  class="list-group-item list-group-item-action">{{ category.name }}</a>
         {% endfor %}
     </div>
-    <a href="{% url 'add_category' %}" class="btn btn-primary">Dodaj kategorie</a>
+    <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
 {% endblock %}
