@@ -2,12 +2,13 @@
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
     <h1>Twoje wydatki</h1>   
-    {{ message }}<br>
-    <a href="{% url 'add_expanse' %}">Dodaj wydatek</a>
+    {{ message }}<br> 
     <br><br>
-    {% for expanse in expanses %}
-        <a href="{% url 'expanse_detail' expanse.id %}">{{ expanse.title }}</a>  {{ expanse.value }}<br>
-    {% endfor %}
-    <br><br><br><br>  
-    <a href="{% url 'categories_list' %}">Kategorie</a>
+    <div class="list-group">
+        {% for expanse in expanses %}
+            <a href="{% url 'expanse_detail' expanse.id %}" class="list-group-item list-group-item-action">{{ expanse.title }}   {{ expanse.value }}</a>
+        {% endfor %}
+    </div>
+    <br>
+    <a href="{% url 'add_expanse' %}" class="btn btn-primary">Dodaj wydatek</a>
 {% endblock %}
