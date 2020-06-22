@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
-    <h1>Twoje wydatki</h1>   
+    <h1>Yours expanses</h1>   
     {{ message }}<br> 
     <br><br>
     <div class="list-group">
@@ -10,5 +10,6 @@
         {% endfor %}
     </div>
     <br>
-    <a href="{% url 'add_expanse' %}" class="btn btn-primary">Dodaj wydatek</a>
+    <a href="{% url 'add_expanse' %}" class="btn btn-primary">Add expanse</a>
+    <a href="{% url 'generate_csv' %}" class="btn btn-primary">CSV</a>
 {% endblock %}

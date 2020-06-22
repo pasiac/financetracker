@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
 from .models import Category, IncomeOutcome
+from django.http import HttpResponse
 
 
 def index(request):
@@ -143,8 +144,17 @@ def delete_category(request, category_id):
     return redirect("categories_list")
 
 
-# def generate_csv(request):
-#     expanses = IncomeOutcome.objects.filter(user=request.user)
-#     with open('raport.csv', 'w', newline='') as csvfile:
-#         writer = csv.writer(csvfile, delimeter=',')
-#         writer.writerow(['title', 'value', 'date', 'category'])
+def generate_csv(request):
+    response = HttpResponse(content_type="text/csv")
+    response[
+        "Content-Disposition"
+    ] = f'attachment; filename="{request.user}_expanses.csv"'
+    expanses = IncomeOutcome.objects.filter(user=request.user).all()
+    data = [
+        [expanse.title, expanse.value, expanse.date, expanse.category]
+        for expanse in expanses
+    ]
+    writer = csv.writer(response)
+    writer.writerow(["title", "value", "date", "category"])
+    writer.writerows(data)
+    return response
