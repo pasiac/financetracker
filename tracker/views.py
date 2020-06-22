@@ -15,6 +15,7 @@ def index(request):
     return render(request, "index.html",)
 
 
+@login_required
 def expanses_list(request):
     if request.user.is_authenticated:
         expanses = IncomeOutcome.objects.filter(user=request.user)
