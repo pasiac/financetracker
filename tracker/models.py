@@ -16,6 +16,7 @@ class IncomeOutcome(models.Model):
     date = models.DateTimeField(auto_now_add=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
+    recipe = models.ImageField(upload_to="img", default="img/default.png")
 
     def get_dict(self):
         return {
@@ -23,6 +24,7 @@ class IncomeOutcome(models.Model):
             "value": self.value,
             "date": self.date,
             "category": self.category,
+            "recipe": self.recipe,
         }
 
 

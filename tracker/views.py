@@ -54,7 +54,7 @@ def delete_expanse(request, expanse_id):
 @login_required
 def add_expanse(request):
     if request.method == "POST":
-        form = AddExpanseForm(data=request.POST, request=request)
+        form = AddExpanseForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
             data.update({"user": request.user})
@@ -62,7 +62,7 @@ def add_expanse(request):
             expanse.save()
             return redirect("expanses_list")
     else:
-        form = AddExpanseForm(request=request)
+        form = AddExpanseForm()
     return render(request, "add_expanse.html", {"form": form})
 
 
