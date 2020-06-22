@@ -69,7 +69,7 @@ def add_expanse(request):
 
 def edit_expanse(request, expanse_id):
     expanse = get_object_or_404(IncomeOutcome, id=expanse_id)
-    form = AddExpanseForm(data=request.POST or None, instance=expanse, request=request)
+    form = AddExpanseForm(request.POST or None, request.FILES or None, instance=expanse)
     if form.is_valid():
         form.save()
         return redirect("expanses_list")
