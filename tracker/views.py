@@ -18,8 +18,8 @@ def index(request):
 
 
 @login_required
-def expanses_list(request):
-    expanses = IncomeOutcome.objects.filter(user=request.user)
+def expanses_list(request, order="-date"):
+    expanses = IncomeOutcome.objects.filter(user=request.user).order_by(order)
     paginator = Paginator(expanses, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

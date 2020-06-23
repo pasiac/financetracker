@@ -8,5 +8,6 @@
             <a href="{% url 'category_detail' category.id %}"  class="list-group-item list-group-item-action">{{ category.name }}</a>
         {% endfor %}
     </div>
+    <br>
     <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
 {% endblock %}

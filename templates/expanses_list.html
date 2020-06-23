@@ -1,7 +1,20 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
-    <h1>Yours expanses</h1>   
+    <h1>Yours expanses</h1> 
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort by
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'expanses_list' "-value"%}">Value: Descending</a>
+            <a class="dropdown-item" href="{% url 'expanses_list' "value"%}">Value: Ascending</a>
+            <a class="dropdown-item" href="{% url 'expanses_list' "-date"%}">Date: Descending</a>
+            <a class="dropdown-item" href="{% url 'expanses_list' "date"%}">Date: Ascending</a>
+            <a class="dropdown-item" href="{% url 'expanses_list' "title"%}">Title: A-Z</a>
+            <a class="dropdown-item" href="{% url 'expanses_list' "-title"%}">Title: Z-A</a>
+        </div>
+</div>  
     {{ message }}<br> 
     <div class="list-group">
         {% for expanse in expanses %}
