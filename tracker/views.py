@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
 from .models import Category, IncomeOutcome
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def index(request):
@@ -30,7 +31,11 @@ def expanses_list(request, order="-date"):
 def expanse_detail(request, expanse_id):
     if request.user.is_authenticated:
         all_user_expanses = IncomeOutcome.objects.filter(user=request.user)
-        expanse = IncomeOutcome.objects.get(id=expanse_id)
+        try:
+            expanse = IncomeOutcome.objects.get(id=expanse_id)
+        except ObjectDoesNotExist:
+            # Obsluga 404?
+            return redirect("/")
         all_expanses_value = __calculate_total_value(all_user_expanses) - float(
             expanse.value
         )
@@ -48,7 +53,11 @@ def expanse_detail(request, expanse_id):
 
 @login_required
 def delete_expanse(request, expanse_id):
-    expanse = IncomeOutcome.objects.get(id=expanse_id)
+    try:
+        expanse = IncomeOutcome.objects.get(id=expanse_id)
+    except ObjectDoesNotExist:
+        # Obsluga 404?
+        return redirect("/")
     title = expanse.title
     expanse.delete()
     return redirect("expanses_list")
@@ -103,25 +112,28 @@ def categories_list(request):
     return render(request, "categories_list.html", context)
 
 
+@login_required
 def category_detail(request, category_id):
-    if request.user.is_authenticated:
+    try:
         category = Category.objects.get(id=category_id)
-        category_expanses_list = IncomeOutcome.objects.filter(
-            user=request.user, category=category
-        )
-        all_expanses = IncomeOutcome.objects.filter(user=request.user)
-        category_value = __calculate_total_value(category_expanses_list)
-        total_value = __calculate_total_value(all_expanses) - category_value
-        chart_data = [round(category_value, 2), round(total_value, 2)]
-        chart_label = [category.name, "Inne kategorie"]
-        context = {
-            "expanses_list": category_expanses_list,
-            "category": category,
-            "chart_data": chart_data,
-            "chart_label": chart_label,
-        }
-    else:
-        context = {"message": "Zaloguj sie, zeby przegladac ta zawartosc"}
+    except ObjectDoesNotExist:
+        # Obsluga 404?
+        return redirect("/")
+
+    expanses_in_category = IncomeOutcome.objects.filter(
+        user=request.user, category=category
+    )
+    all_expanses = IncomeOutcome.objects.filter(user=request.user)
+    category_value = __calculate_total_value(expanses_in_category)
+    total_value = __calculate_total_value(all_expanses) - category_value
+    chart_data = [round(category_value, 2), round(total_value, 2)]
+    chart_label = [category.name, "Inne kategorie"]
+    context = {
+        "expanses_list": expanses_in_category,
+        "category": category,
+        "chart_data": chart_data,
+        "chart_label": chart_label,
+    }
     return render(request, "category_detail.html", context)
 
 
@@ -140,8 +152,12 @@ def edit_category(request, category_id):
 
 @login_required
 def delete_category(request, category_id):
-    expanse = Category.objects.get(id=category_id)
-    expanse.delete()
+    try:
+        expanse = Category.objects.get(id=category_id)
+        expanse.delete()
+    except ObjectDoesNotExist:
+        # Obsluga 404?
+        return redirect("/")
     return redirect("categories_list")
 
 
