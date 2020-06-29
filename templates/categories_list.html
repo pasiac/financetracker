@@ -4,10 +4,27 @@
     <h1>Yours categories</h1>
     {{ message }}<br>
     <div class="list-group">
-        {% for category in categories %}
+        {% for category in page_obj %}
             <a href="{% url 'category_detail' category.id %}"  class="list-group-item list-group-item-action">{{ category.name }}</a>
         {% endfor %}
     </div>
     <br>
     <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
+        <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock %}

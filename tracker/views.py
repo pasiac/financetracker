@@ -95,11 +95,11 @@ def add_category(request):
 
 @login_required
 def categories_list(request):
-    if request.user.is_authenticated:
-        categories = Category.objects.filter(user=request.user)
-        context = {"categories": categories}
-    else:
-        context = {"message": "Zaloguj sie, zeby przegladac swoje kategorie"}
+    categories = Category.objects.filter(user=request.user)
+    paginator = Paginator(categories, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {"categories": categories, "page_obj": page_obj}
     return render(request, "categories_list.html", context)
 
 

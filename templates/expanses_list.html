@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Przegladaj wydatki{% endblock %}
 {% block body %}
-    <h1>Yours expanses</h1> 
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Sort by
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{% url 'expanses_list' "-value"%}">Value: Descending</a>
-            <a class="dropdown-item" href="{% url 'expanses_list' "value"%}">Value: Ascending</a>
-            <a class="dropdown-item" href="{% url 'expanses_list' "-date"%}">Date: Descending</a>
-            <a class="dropdown-item" href="{% url 'expanses_list' "date"%}">Date: Ascending</a>
-            <a class="dropdown-item" href="{% url 'expanses_list' "title"%}">Title: A-Z</a>
-            <a class="dropdown-item" href="{% url 'expanses_list' "-title"%}">Title: Z-A</a>
+    <div class="container">
+        <div class="row">
+            <div class="col col-lg-4"><h1>Yours expanses</h1></div>
+            <div class="col col-lg-2">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort by
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'expanses_list' "-value"%}">Value: Descending</a>
+                    <a class="dropdown-item" href="{% url 'expanses_list' "value"%}">Value: Ascending</a>
+                    <a class="dropdown-item" href="{% url 'expanses_list' "-date"%}">Date: Descending</a>
+                    <a class="dropdown-item" href="{% url 'expanses_list' "date"%}">Date: Ascending</a>
+                    <a class="dropdown-item" href="{% url 'expanses_list' "title"%}">Title: A-Z</a>
+                    <a class="dropdown-item" href="{% url 'expanses_list' "-title"%}">Title: Z-A</a>
+                </div>
+            </div> 
         </div>
-</div>  
+    </div> 
     {{ message }}<br> 
     <div class="list-group">
-        {% for expanse in expanses %}
+        {% for expanse in page_obj %}
             <a href="{% url 'expanse_detail' expanse.id %}" class="list-group-item list-group-item-action">{{ expanse.title }}   {{ expanse.value }}</a>
         {% endfor %}
     </div>

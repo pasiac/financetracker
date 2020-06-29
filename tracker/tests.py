@@ -21,12 +21,6 @@ class TestExploreExpanses(TestCase):
         self.request = RequestFactory()
         self.user = UserFactory()
 
-    def test_return_prompt_to_login_if_user_isnt_log_in(self):
-        request = self.request.get(reverse("expanses_list"))
-        request.user = AnonymousUser()
-        response = expanses_list(request)
-        self.assertContains(response, "Zaloguj sie, zeby przegladac swoje wydatki")
-
     def test_return_single_user_expanse(self):
         incomeOutcome = IncomeOutcomeFactory(user=self.user)
         request = self.request.get(reverse("expanses_list"))
