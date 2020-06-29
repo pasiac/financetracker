@@ -150,14 +150,13 @@ def generate_csv(request):
     response[
         "Content-Disposition"
     ] = f'attachment; filename="{request.user}_expanses.csv"'
-    expanses = IncomeOutcome.objects.filter(user=request.user).all()
-    data = [
-        [expanse.title, expanse.value, expanse.date, expanse.category]
-        for expanse in expanses
-    ]
+    expanses = IncomeOutcome.objects.values_list(
+        "title", "value", "date", "category__name"
+    )
+    response.write("\ufeff".encode("utf8"))
     writer = csv.writer(response)
     writer.writerow(["title", "value", "date", "category"])
-    writer.writerows(data)
+    writer.writerows(expanses)
     return response
 
 
