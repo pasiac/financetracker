@@ -6,7 +6,7 @@ from typing import List
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import AddCategoryForm, AddExpanseForm
@@ -176,5 +176,22 @@ def generate_csv(request):
     return response
 
 
+@login_required
 def chart_tab(request):
-    pass
+    expanses = IncomeOutcome.objects.filter(user=request.user).order_by("date")
+    current_expanse = expanses[0]
+    date_and_values = {current_expanse.date.strftime("%d/%m/%Y"): 0}
+    for expanse in expanses:
+        if current_expanse.date.day - expanse.date.day == 0:
+            date_and_values[current_expanse.date.strftime("%d/%m/%Y")] += float(
+                expanse.value
+            )
+        else:
+            current_expanse = expanse
+            date_and_values.update(
+                {current_expanse.date.strftime("%d/%m/%Y"): float(expanse.value)}
+            )
+    chart_labels = list(date_and_values.keys())
+    chart_data = list(date_and_values.values())
+    context = {"chart_labels": chart_labels, "chart_data": chart_data}
+    return render(request, "chart_tab.html", context)

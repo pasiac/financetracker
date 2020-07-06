@@ -54,6 +54,13 @@ class TestExploreExpanses(TestCase):
         response = expanse_detail(request, incomeOutcome.id)
         self.__assert_all_fields_of_details(response, incomeOutcome)
 
+    def test_sort_expanses(self):
+        expnases = self.__create_list_of_expanses_for_user()
+        request = self.request.get(reverse("expanses_list"))
+        request.user = self.user
+        response = expanses_list(request)
+        # jak to testowac?
+
     def __create_list_of_expanses_for_user(self):
         return [
             IncomeOutcomeFactory(user=self.user, title=f"test{x}") for x in range(10)
