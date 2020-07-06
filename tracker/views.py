@@ -179,14 +179,19 @@ def generate_csv(request):
 @login_required
 def chart_tab(request):
     expanses = IncomeOutcome.objects.filter(user=request.user).order_by("date")
-    first_date = expanses[0]
-    date_and_values = {first_date.date.strftime("%d/%m/%Y"): 0}
+    current_expanse = expanses[0]
+    date_and_values = {current_expanse.date.strftime("%d/%m/%Y"): 0}
     for expanse in expanses:
-        if first_date.date.day - expanse.date.day == 0:
-            date_and_values[first_date.date.strftime("%d/%m/%Y")] += expanse.value
-        else:
-            first_date = expanse
-            date_and_values.update(
-                {first_date.date.strftime("%d/%m/%Y"): expanse.value}
+        if current_expanse.date.day - expanse.date.day == 0:
+            date_and_values[current_expanse.date.strftime("%d/%m/%Y")] += float(
+                expanse.value
             )
-    return JsonResponse(date_and_values)
+        else:
+            current_expanse = expanse
+            date_and_values.update(
+                {current_expanse.date.strftime("%d/%m/%Y"): float(expanse.value)}
+            )
+    chart_labels = list(date_and_values.keys())
+    chart_data = list(date_and_values.values())
+    context = {"chart_labels": chart_labels, "chart_data": chart_data}
+    return render(request, "chart_tab.html", context)
