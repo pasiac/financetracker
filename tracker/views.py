@@ -3,6 +3,7 @@ import datetime
 from calendar import monthrange
 from datetime import timedelta
 from typing import List
+from .tasks import get_prices
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -15,6 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def index(request):
+    get_prices()
     return render(request, "index.html",)
 
 
