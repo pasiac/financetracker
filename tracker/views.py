@@ -3,6 +3,7 @@ import datetime
 from calendar import monthrange
 from datetime import timedelta
 from typing import List
+from .tasks import get_prices
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -15,6 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def index(request):
+    get_prices()
     return render(request, "index.html",)
 
 
@@ -28,26 +30,24 @@ def expanses_list(request, order="-date"):
     return render(request, "expanses_list.html", context)
 
 
+@login_required
 def expanse_detail(request, expanse_id):
-    if request.user.is_authenticated:
-        all_user_expanses = IncomeOutcome.objects.filter(user=request.user)
-        try:
-            expanse = IncomeOutcome.objects.get(id=expanse_id)
-        except ObjectDoesNotExist:
-            # Obsluga 404?
-            return redirect("/")
-        all_expanses_value = __calculate_total_value(all_user_expanses) - float(
-            expanse.value
-        )
-        chart_data = [round(float(expanse.value), 2), round(all_expanses_value, 2)]
-        chart_label = [expanse.title, "Inne wydatki"]
-        context = {
-            "expanse": expanse,
-            "chart_data": chart_data,
-            "chart_label": chart_label,
-        }
-    else:
-        context = {"message": "Zaloguj sie, zeby przegladac swoje wydatki"}
+    all_user_expanses = IncomeOutcome.objects.filter(user=request.user)
+    try:
+        expanse = IncomeOutcome.objects.get(id=expanse_id)
+    except ObjectDoesNotExist:
+        # Obsluga 404?
+        return redirect("/")
+    all_expanses_value = __calculate_total_value(all_user_expanses) - float(
+        expanse.value
+    )
+    chart_data = [round(float(expanse.value), 2), round(all_expanses_value, 2)]
+    chart_label = [expanse.title, "Inne wydatki"]
+    context = {
+        "expanse": expanse,
+        "chart_data": chart_data,
+        "chart_label": chart_label,
+    }
     return render(request, "expanse_detail.html", context)
 
 
@@ -78,6 +78,7 @@ def add_expanse(request):
     return render(request, "add_expanse.html", {"form": form})
 
 
+@login_required
 def edit_expanse(request, expanse_id):
     expanse = get_object_or_404(IncomeOutcome, id=expanse_id)
     form = AddExpanseForm(request.POST or None, request.FILES or None, instance=expanse)
@@ -141,6 +142,7 @@ def __calculate_total_value(expanse_list: List[IncomeOutcome]) -> float:
     return round(sum(float(expanse.value) for expanse in expanse_list), 2)
 
 
+@login_required
 def edit_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     form = AddCategoryForm(request.POST or None, instance=category)

@@ -1,10 +1,11 @@
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import reverse
 from django.test import RequestFactory, TestCase
+from unittest.mock import patch
 
-from .factories import IncomeOutcomeFactory, UserFactory
+from .factories import IncomeOutcomeFactory, UserFactory, CategoryFactory
 from .models import IncomeOutcome
-from .views import delete_expanse, expanse_detail, expanses_list
+from .views import delete_expanse, expanse_detail, expanses_list, add_expanse
 
 STATUS_OK = 200
 STATUS_REDIRECTED = 302 or 301
@@ -54,12 +55,18 @@ class TestExploreExpanses(TestCase):
         response = expanse_detail(request, incomeOutcome.id)
         self.__assert_all_fields_of_details(response, incomeOutcome)
 
-    def test_sort_expanses(self):
-        expnases = self.__create_list_of_expanses_for_user()
-        request = self.request.get(reverse("expanses_list"))
+    def test_add_expanse_should_add_new_expanse_if_correct_data(self):
+        data = {
+            "title": "test",
+            "value": "100",
+            "category": CategoryFactory(user=self.user),
+        }
+        request = self.request.get(reverse("add_expanse"))
         request.user = self.user
-        response = expanses_list(request)
-        # jak to testowac?
+        response = add_expanse(request)
+        counted_objects = IncomeOutcome.objects.count()
+        # self.assertEqual(1, counted_objects)
+        # ??????
 
     def __create_list_of_expanses_for_user(self):
         return [
