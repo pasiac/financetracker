@@ -18,27 +18,31 @@ def get_prices():
     stokrotka_items = []
 
     for item in items_name:
-        # Configure
-        options = Options()
-        options.headless = True
-        options.add_argument("--window-size=1920,1200")
-
-        # Fetch data
-        driver = webdriver.Chrome(options=options, executable_path=WEBDRIVER_PATH)
-        driver.get(f"https://sklep.stokrotka.pl/szukaj/?search=product&string={item}")
-        response = driver.find_elements_by_xpath(
-            "/html/body/div[3]/div/div[2]/div[2]/div[1]"
-        )[0].text
-        print(response)
-        driver.close()
-
+        response = fetch_stokrotka_data(item)
         # Clear data
         if NOT_FOUND_MESSAGE in response:
             continue
         else:
-            response = response.replace("\n▾", "").replace("\n▴", "").split("\n")
-            response_iterator = iter(response)
-            stokrotka_items.append(list(zip(response_iterator, response_iterator)))
+            stokrotka_items.append(clear_data(response))
 
-    for item in stokrotka_items:
-        print(item)
+    print(stokrotka_items)
+
+def fetch_stokrotka_data(item_name):
+    # Configure
+    options = Options()
+    options.headless = True
+    options.add_argument("--window-size=1920,1200")
+
+    # Fetch data
+    driver = webdriver.Chrome(options=options, executable_path=WEBDRIVER_PATH)
+    driver.get(f"https://sklep.stokrotka.pl/szukaj/?search=product&string={item_name}")
+    response = driver.find_elements_by_xpath(
+        "/html/body/div[3]/div/div[2]/div[2]/div[1]"
+    )[0].text
+    driver.close()
+    return response
+
+def clear_data(response):
+    response = response.replace("\n▾", "").replace("\n▴", "").split("\n")
+    response_iterator = iter(response)
+    return list(zip(response_iterator, response_iterator))
