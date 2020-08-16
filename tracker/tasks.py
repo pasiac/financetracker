@@ -1,14 +1,44 @@
 from __future__ import absolute_import, unicode_literals
 
-from celery import task
-from .models import IncomeOutcome
 import requests
 from bs4 import BeautifulSoup
+from celery import task
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+from tracker.models import IncomeOutcome
+
+WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
+NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
 
 
 @task()
 def get_prices():
-    items_names = IncomeOutcome.objects.values_list("title", flat=True)
-    items_response_list = [requests.get(f'https://zakupy.auchan.pl/shop/search/{name}') for name in items_names]
-    
-    print("I have to use silenium to complete this task")
+    items_name = IncomeOutcome.objects.values_list("title", flat=True)
+    stokrotka_items = []
+
+    for item in items_name:
+        # Configure
+        options = Options()
+        options.headless = True
+        options.add_argument("--window-size=1920,1200")
+
+        # Fetch data
+        driver = webdriver.Chrome(options=options, executable_path=WEBDRIVER_PATH)
+        driver.get(f"https://sklep.stokrotka.pl/szukaj/?search=product&string={item}")
+        response = driver.find_elements_by_xpath(
+            "/html/body/div[3]/div/div[2]/div[2]/div[1]"
+        )[0].text
+        print(response)
+        driver.close()
+
+        # Clear data
+        if NOT_FOUND_MESSAGE in response:
+            continue
+        else:
+            response = response.replace("\n▾", "").replace("\n▴", "").split("\n")
+            response_iterator = iter(response)
+            stokrotka_items.append(list(zip(response_iterator, response_iterator)))
+
+    for item in stokrotka_items:
+        print(item)

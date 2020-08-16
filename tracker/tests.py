@@ -1,11 +1,12 @@
+from unittest.mock import patch
+
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import reverse
 from django.test import RequestFactory, TestCase
-from unittest.mock import patch
 
-from .factories import IncomeOutcomeFactory, UserFactory, CategoryFactory
+from .factories import CategoryFactory, IncomeOutcomeFactory, UserFactory
 from .models import IncomeOutcome
-from .views import delete_expanse, expanse_detail, expanses_list, add_expanse
+from .views import add_expanse, delete_expanse, expanse_detail, expanses_list
 
 STATUS_OK = 200
 STATUS_REDIRECTED = 302 or 301
