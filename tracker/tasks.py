@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from tracker.models import IncomeOutcome
+from datetime import date
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
 NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
@@ -14,7 +15,7 @@ NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiw
 
 @task()
 def get_prices():
-    items_name = IncomeOutcome.objects.values_list("title", flat=True)
+    items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list("title", flat=True)
     stokrotka_items = []
 
     for item in items_name:
