@@ -1,13 +1,17 @@
 from __future__ import absolute_import, unicode_literals
 
 from datetime import date
+from decimal import Decimal
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
 from celery import task
+from django.db.models import Q
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from price_scraper.models import Price, Product
 from tracker.models import IncomeOutcome
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
@@ -19,17 +23,13 @@ def get_prices():
     items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list(
         "title", flat=True
     )
-    stokrotka_items = []
-
     for item in items_name:
         response = fetch_stokrotka_data(item)
         # Clear data
         if NOT_FOUND_MESSAGE in response:
             continue
         else:
-            stokrotka_items.append(clear_data(response))
-
-    print(stokrotka_items)
+            add_or_update_product(clear_data(response))
 
 
 def fetch_stokrotka_data(item_name):
@@ -49,6 +49,32 @@ def fetch_stokrotka_data(item_name):
 
 
 def clear_data(response):
-    response = response.replace("\n▾", "").replace("\n▴", "").split("\n")
+    response = (
+        response.replace("\n▾", "")
+        .replace("\n▴", "")
+        .replace(",", ".")
+        .replace("zł", "")
+        .split("\n")
+    )
     response_iterator = iter(response)
     return list(zip(response_iterator, response_iterator))
+
+
+def add_or_update_product(items: List):
+    for item in items:
+        # If there are 2 prices (old, new) grab only current
+        value = item[1].split(" ")[0]
+        value = Decimal(value)
+        product = Product.objects.filter(title=item[0])
+        product = Price.objects.filter(product__title=item[0], value=value)
+        if not product:
+            product = Product.objects.create(title=item[0], category="spozywcze")
+            product.save()
+            price = Price.objects.create(
+                shop_name="Stokrotka", value=value, product=product
+            )
+            price.save()
+            print(f"Save product {product} with {price}")
+        else:
+            print("This item already exist")
+            continue

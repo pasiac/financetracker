@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "price_scraper.apps.PriceScraperConfig",
 ]
 
 MIDDLEWARE = [
@@ -96,7 +97,7 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_TIMEZONE = "Europe/London"
 CELERY_BEAT_SCHEDULE = {
     "get_prices": {
-        "task": "tracker.tasks.get_prices",
+        "task": "price_scraper.tasks.get_prices",
         "schedule": 30.0,
         # 'args': (*args)
     },
