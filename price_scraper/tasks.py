@@ -16,6 +16,8 @@ from tracker.models import IncomeOutcome
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
 NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
+STOKROTKA_PATH = "https://sklep.stokrotka.pl/szukaj/?search=product&string="
+STOKROTKA_ITEM_XPATH = "/html/body/div[3]/div/div[2]/div[2]/div[1]"
 
 
 @task()
@@ -24,7 +26,7 @@ def get_prices():
         "title", flat=True
     )
     for item in items_name:
-        response = fetch_stokrotka_data(item)
+        response = fetch_data(item)
         # Clear data
         if NOT_FOUND_MESSAGE in response:
             continue
@@ -32,7 +34,7 @@ def get_prices():
             add_or_update_product(clear_data(response))
 
 
-def fetch_stokrotka_data(item_name):
+def fetch_data(item_name, path=STOKROTKA_PATH, xpath=STOKROTKA_ITEM_XPATH):
     # Configure
     options = Options()
     options.headless = True
@@ -40,10 +42,8 @@ def fetch_stokrotka_data(item_name):
 
     # Fetch data
     driver = webdriver.Chrome(options=options, executable_path=WEBDRIVER_PATH)
-    driver.get(f"https://sklep.stokrotka.pl/szukaj/?search=product&string={item_name}")
-    response = driver.find_elements_by_xpath(
-        "/html/body/div[3]/div/div[2]/div[2]/div[1]"
-    )[0].text
+    driver.get(f"{path}{item_name}")
+    response = driver.find_elements_by_xpath(xpath)[0].text
     driver.close()
     return response
 
