@@ -1,5 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
+from datetime import date
+
 import requests
 from bs4 import BeautifulSoup
 from celery import task
@@ -7,7 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from tracker.models import IncomeOutcome
-from datetime import date
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
 NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
@@ -15,7 +16,9 @@ NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiw
 
 @task()
 def get_prices():
-    items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list("title", flat=True)
+    items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list(
+        "title", flat=True
+    )
     stokrotka_items = []
 
     for item in items_name:
@@ -27,6 +30,7 @@ def get_prices():
             stokrotka_items.append(clear_data(response))
 
     print(stokrotka_items)
+
 
 def fetch_stokrotka_data(item_name):
     # Configure
@@ -42,6 +46,7 @@ def fetch_stokrotka_data(item_name):
     )[0].text
     driver.close()
     return response
+
 
 def clear_data(response):
     response = response.replace("\n▾", "").replace("\n▴", "").split("\n")
