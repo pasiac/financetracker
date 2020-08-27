@@ -87,8 +87,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
-# Celery application definition
-# http://docs.celeryproject.org/en/v4.0.2/userguide/configuration.html
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
@@ -98,7 +96,6 @@ CELERY_TIMEZONE = "Europe/London"
 CELERY_BEAT_SCHEDULE = {
     "get_prices": {
         "task": "price_scraper.tasks.get_prices",
-        "schedule": 30.0,
-        # 'args': (*args)
+        "schedule": 12.0 * 60.0 * 60.0,
     },
 }
