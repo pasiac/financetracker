@@ -3,7 +3,9 @@ __pycache__/
 /__pycache__/
 __pycache__/
 *.py[cod]
-
+celery.txt
+celerybeat-schedule
+chromedriver
 *.sqlite3
 # C extensions
 *.so

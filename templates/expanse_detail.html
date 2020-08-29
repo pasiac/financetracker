@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Wydatkownia - Wydatek{% endblock %}
 {% block body %}
-    <h1>Expanse {{expanse.title}}</h1>
+    <h1>{{ expanse.title}}</h1>
     {{ message }}
     <ul class="list-group">
     {% for key, value in expanse.get_dict.items %}
