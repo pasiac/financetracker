@@ -1,12 +1,9 @@
-from unittest.mock import patch
-
-from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import reverse
 from django.test import RequestFactory, TestCase
 
-from .factories import CategoryFactory, IncomeOutcomeFactory, UserFactory
-from .models import IncomeOutcome
-from .views import add_expanse, delete_expanse, expanse_detail, expanses_list
+from tracker.factories import IncomeOutcomeFactory, UserFactory
+from tracker.models import IncomeOutcome
+from tracker.views import delete_expanse, expanse_detail, expanses_list
 
 STATUS_OK = 200
 STATUS_REDIRECTED = 302 or 301
@@ -31,7 +28,7 @@ class TestExploreExpanses(TestCase):
         self.assertContains(response, incomeOutcome.value)
 
     def test_return_list_of_user_expanses(self):
-        income_outcomes = self.__create_list_of_expanses_for_user()
+        self.__create_list_of_expanses_for_user()
         request = self.request.get(reverse("expanses_list"))
         request.user = self.user
         response = expanses_list(request)
@@ -56,18 +53,18 @@ class TestExploreExpanses(TestCase):
         response = expanse_detail(request, incomeOutcome.id)
         self.__assert_all_fields_of_details(response, incomeOutcome)
 
-    def test_add_expanse_should_add_new_expanse_if_correct_data(self):
-        data = {
-            "title": "test",
-            "value": "100",
-            "category": CategoryFactory(user=self.user),
-        }
-        request = self.request.get(reverse("add_expanse"))
-        request.user = self.user
-        response = add_expanse(request)
-        counted_objects = IncomeOutcome.objects.count()
-        # self.assertEqual(1, counted_objects)
-        # ??????
+    # def test_add_expanse_should_add_new_expanse_if_correct_data(self):
+    #     data = {
+    #         "title": "test",
+    #         "value": "100",
+    #         "category": CategoryFactory(user=self.user),
+    #     }
+    #     request = self.request.get(reverse("add_expanse"))
+    #     request.user = self.user
+    #     response = add_expanse(request)
+    #     counted_objects = IncomeOutcome.objects.count()
+    #     # self.assertEqual(1, counted_objects)
+    #     # ??????
 
     def __create_list_of_expanses_for_user(self):
         return [

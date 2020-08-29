@@ -4,10 +4,7 @@ from datetime import date
 from decimal import Decimal
 from typing import List
 
-import requests
-from bs4 import BeautifulSoup
 from celery import task
-from django.db.models import Q
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -22,7 +19,7 @@ STOKROTKA_ITEM_XPATH = "/html/body/div[3]/div/div[2]/div[2]/div[1]"
 
 @task()
 def get_prices():
-    ### Scrapes web to find prices of today added expanses ###
+    # Scrapes web to find prices of today added expanses
     items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list(
         "title", flat=True
     )
