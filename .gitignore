@@ -4,6 +4,7 @@ __pycache__/
 __pycache__/
 /migratinos/
 */migratinos/*
+migrations/
 
 *.py[cod]
 celery.txt
