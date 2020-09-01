@@ -12,14 +12,14 @@ LOGOUT_REDIRECT_URL = "/"
 
 INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
-    "tracker.apps.TrackerConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "price_scraper.apps.PriceScraperConfig",
+    "expense",
+    "categories"
 ]
 
 MIDDLEWARE = [
@@ -91,15 +91,15 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
-CELERY_ACCEPT_CONTENT = ["application/json"]
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_TASK_SERIALIZER = "json"
-CELERY_TIMEZONE = "Europe/London"
-CELERY_BEAT_SCHEDULE = {
-    "get_prices": {
-        "task": "price_scraper.tasks.get_prices",
-        "schedule": 12.0 * 60.0 * 60.0,
-    },
-}
+# CELERY_BROKER_URL = "redis://localhost:6379"
+# CELERY_RESULT_BACKEND = "redis://localhost:6379"
+# CELERY_ACCEPT_CONTENT = ["application/json"]
+# CELERY_RESULT_SERIALIZER = "json"
+# CELERY_TASK_SERIALIZER = "json"
+# CELERY_TIMEZONE = "Europe/London"
+# CELERY_BEAT_SCHEDULE = {
+#     "get_prices": {
+#         "task": "price_scraper.tasks.get_prices",
+#         "schedule": 12.0 * 60.0 * 60.0,
+#     },
+# }

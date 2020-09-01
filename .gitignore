@@ -2,6 +2,9 @@
 __pycache__/
 /__pycache__/
 __pycache__/
+/migratinos/
+*/migratinos/*
+
 *.py[cod]
 celery.txt
 celerybeat-schedule

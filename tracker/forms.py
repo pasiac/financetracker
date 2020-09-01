@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Category, IncomeOutcome
+from .models import Category, Expense
 
 
 class AddExpanseForm(forms.ModelForm):
@@ -12,7 +12,7 @@ class AddExpanseForm(forms.ModelForm):
     #         )
 
     class Meta:
-        model = IncomeOutcome
+        model = Expense
         fields = ["title", "value", "category", "recipe"]
 
 

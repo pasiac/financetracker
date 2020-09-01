@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from price_scraper.models import Price, Product
-from tracker.models import IncomeOutcome
+from tracker.models import Expense
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
 NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
@@ -19,8 +19,8 @@ STOKROTKA_ITEM_XPATH = "/html/body/div[3]/div/div[2]/div[2]/div[1]"
 
 @task()
 def get_prices():
-    # Scrapes web to find prices of today added expanses
-    items_name = IncomeOutcome.objects.filter(date__date=date.today()).values_list(
+    # Scrapes web to find prices of today added expense
+    items_name = Expense.objects.filter(date__date=date.today()).values_list(
         "title", flat=True
     )
     for item in items_name:

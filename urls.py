@@ -6,8 +6,8 @@ import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("tracker.urls")),
+    path("wydatki/", include("expense.urls")),
     path("", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("", include("price_scraper.urls")),
+    # path("", include("price_scraper.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
