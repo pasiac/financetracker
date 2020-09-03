@@ -1,0 +1,6 @@
+{% if page_obj.has_other_pages %}
+    serve pagination
+    {% endif %}
+{% for expense in expenses %}
+<p>{{expense.title }}</p><br>
+{% endfor%}

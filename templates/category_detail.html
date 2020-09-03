@@ -4,7 +4,7 @@
     <h1>Category {{category.name}}</h1>
     {{ message }}
     <div class="list-group">
-        {% for expanse in expanses_list %}
+        {% for expanse in expense_list %}
             <a href="{% url 'expanse_detail' expanse.id %}" class="list-group-item list-group-item-action">{{ expanse.title }}   {{ expanse.value }}</a>
         {% endfor %}
     </div>

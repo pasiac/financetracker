@@ -3,20 +3,20 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col col-lg-4"><h1>Yours expanses</h1></div>
-            <div class="col col-lg-2">
+            <div class="col col-lg-4"><h1>Yours expense</h1></div>
+            <!-- <div class="col col-lg-2">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort by
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'expanses_list' "-value"%}">Value: Descending</a>
-                    <a class="dropdown-item" href="{% url 'expanses_list' "value"%}">Value: Ascending</a>
-                    <a class="dropdown-item" href="{% url 'expanses_list' "-date"%}">Date: Descending</a>
-                    <a class="dropdown-item" href="{% url 'expanses_list' "date"%}">Date: Ascending</a>
-                    <a class="dropdown-item" href="{% url 'expanses_list' "title"%}">Title: A-Z</a>
-                    <a class="dropdown-item" href="{% url 'expanses_list' "-title"%}">Title: Z-A</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Value: Descending</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Value: Ascending</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Date: Descending</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Date: Ascending</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Title: A-Z</a>
+                    <a class="dropdown-item" href="{% url 'expense_list' %}">Title: Z-A</a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div> 
     {{ message }}<br> 
