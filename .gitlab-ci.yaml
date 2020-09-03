@@ -1,23 +1,23 @@
-image: python:latest
-
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-
-cache:
-  paths:
-    - .cache/pip
-    - venv/
+image: "python:3.8"
 
 before_script:
-  - python -V 
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
+  - python --version
+  - pip install -r requirements.txt
 
+stages:
+  - Static Analysis
+  - Test
 
-test:
+flake8:
+  stage: Static Analysis
   script:
-    - apt-get update -qy
-    - apt-get install -y python-dev python-pip
-    - pip install -r requirements.txt
-    - python manage.py test
+  - flake8 --max-line-length=99 
+
+unit_test:
+  stage: Test
+  script:
+  - pwd
+  - ls -l
+  - export PYTHONPATH="$PYTHONPATH:."
+  - pytest
+  - python manage.py test
