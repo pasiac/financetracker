@@ -1,14 +1,17 @@
-from factory.django import DjangoModelFactory
-import factory
-from factory.fuzzy import FuzzyText
-from expense.models import Expense
 import datetime
+
+import factory
+from factory.django import DjangoModelFactory
+
+from accounts.factories import UserFactory
+from expense.models import Expense
 
 
 class ExpenseFactory(DjangoModelFactory):
     title = factory.Sequence(lambda n: "title_%d" % n)
     value = factory.fuzzy.FuzzyDecimal(low=1)
     date = datetime.datetime.now()
+    created_by = factory.SubFactory(UserFactory)
 
     class Meta:
         model = Expense

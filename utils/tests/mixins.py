@@ -14,7 +14,9 @@ class TestUtilityMixin:
         return expected_location == parsed_location.path
 
     def client_send_request_with_params(self, url, *args):
+        self.client.login()
         return self.client.get(url, *args)
 
     def client_send_post_request(self, url, data):
+        self.client.login()
         return self.client.post(url, data)
