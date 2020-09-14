@@ -6,3 +6,4 @@ factory-boy
 redis
 amqp
 celery
+Pillow
