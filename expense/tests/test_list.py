@@ -27,7 +27,9 @@ class TestList(TestCase, TestUtilityMixin):
         self,
     ):
         self.__given_user_logged_in()
-        ExpenseFactory.create_batch(size=self.expense_per_page+1,created_by=self.user)
+        ExpenseFactory.create_batch(
+            size=self.expense_per_page + 1, created_by=self.user
+        )
 
         response = self.client.get(self.url)
         self.assertEqual(self.STATUS_OK, response.status_code)

@@ -6,6 +6,7 @@ import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("kategorie/", include("categories.urls")),
     path("wydatki/", include("expense.urls")),
     path("", include("accounts.urls")),
     path("accounts/", include("django.contrib.auth.urls")),

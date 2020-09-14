@@ -7,9 +7,9 @@ from typing import List
 from celery import task
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from tracker.models import Expense
 
 from price_scraper.models import Price, Product
-from tracker.models import Expense
 
 WEBDRIVER_PATH = "/home/dawid/financestracker/chromedriver"
 NOT_FOUND_MESSAGE = "Nie znaleziono produktów spełniających kryteria wyszukiwania."
