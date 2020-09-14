@@ -1,6 +1,32 @@
-{% if page_obj.has_other_pages %}
-    serve pagination
+{% extends "base.html" %}
+{% block body %}
+    <h1>Yours categories</h1>
+    <div class="list-group">
+        {% for category in categories %}
+            <a href="{% url 'category_detail' category.id %}"  class="list-group-item list-group-item-action">{{ category.title }}</a>
+        {% endfor%}
+    </div>
+    <a href="{% url 'add_category' %}" class="btn btn-primary">Add category</a>
+
+    {% if is_paginated %}
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
     {% endif %}
-{% for category in categories %}
-<p>{{ category.title }}</p><br>
-{% endfor%}
+{% endblock %}

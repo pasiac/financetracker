@@ -1,1 +1,14 @@
-{{ object }}
+{% extends "base.html" %}
+{% block body %}
+    <p class="list-group-item">Title: {{ object.title }}</p>
+    <p class="list-group-item">Price: {{ object.value }}</p>
+    <p class="list-group-item">Added: {{ object.date }}</p>
+    {% if object.category %}
+    <p class="list-group-item">Category: {{ object.category }}</p>
+    {% endif %}
+    {% if object.recipe %}
+        <p class="list-group-item">Recipe: {{ object.recipe }}</p>
+    {% endif %}
+    <a class="btn btn-primary" href="{% url 'delete_expense' expense.id %}">Usun</a>
+    <a class="btn btn-primary" href="{% url 'edit_expense' expense.id %}">Edytuj</a>
+{% endblock %}

@@ -33,7 +33,7 @@ class TestList(TestCase, TestUtilityMixin):
 
         response = self.client.get(self.url)
         self.assertEqual(self.STATUS_OK, response.status_code)
-        self.assertContains(response, "serve pagination")
+        self.assertContains(response, "&laquo;")
 
     def __given_user_logged_in(self):
         self.client.force_login(self.user, backend=None)
