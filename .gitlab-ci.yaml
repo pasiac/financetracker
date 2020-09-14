@@ -1,23 +1,11 @@
-image: "python:3.8"
+types:
+  - build
+  - test
 
-before_script:
-  - python --version
-  - pip install -r requirements.txt
+build_app:
+  type: build
+  script: pip install -r requirements.txt
 
-stages:
-  - Static Analysis
-  - Test
-
-flake8:
-  stage: Static Analysis
-  script:
-  - flake8 --max-line-length=99 
-
-unit_test:
-  stage: Test
-  script:
-  - pwd
-  - ls -l
-  - export PYTHONPATH="$PYTHONPATH:."
-  - pytest
-  - python manage.py test
+test_app:
+  type: test
+  script: python manage.py test
