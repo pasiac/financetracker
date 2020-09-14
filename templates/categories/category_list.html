@@ -1,0 +1,6 @@
+{% if page_obj.has_other_pages %}
+    serve pagination
+    {% endif %}
+{% for category in categories %}
+<p>{{ category.title }}</p><br>
+{% endfor%}
