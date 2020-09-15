@@ -2,7 +2,9 @@
 {% block body %}
     <div>
         <h1>{{ object.title }}</h1>
-        <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
-        {% include 'pie_chart.html' %}
+        {% if chart_label and chart_data %}
+            <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
+            {% include 'pie_chart.html' %}
+        {% endif %}
     </div>
 {% endblock %}
