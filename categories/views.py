@@ -1,10 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  UpdateView)
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
 
 from categories.forms import CategoryForm
 from categories.models import Category
+from expense.models import Expense
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -18,6 +24,29 @@ class CategoryListView(LoginRequiredMixin, ListView):
 
 class CategoryDetailView(LoginRequiredMixin, DetailView):
     model = Category
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        try:
+            chart = self.prepare_chart_data()
+        except AttributeError:
+            return context
+        context.update(chart)
+        return context
+
+    def prepare_chart_data(self):
+        object_expenses = self.object.get_related_expenses_value_list()
+        categories_expenses = Expense.objects.values_list("value", flat=True).exclude(
+            category__pk=self.object.pk
+        )
+        chart = {
+            "chart_label": [self.object.title, "Others"],
+            "chart_data": [
+                sum(map(float, object_expenses)),
+                sum(map(float, categories_expenses)),
+            ],
+        }
+        return chart
 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):

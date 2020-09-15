@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
-    {{ object }}
+    <div>
+        <h1>{{ object.title }}</h1>
+        <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
+        {% include 'pie_chart.html' %}
+    </div>
 {% endblock %}
