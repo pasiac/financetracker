@@ -1,11 +1,13 @@
 import factory
 from django.contrib.auth.models import User
 from factory.django import DjangoModelFactory
+from factory.fuzzy import FuzzyText
+
 
 
 class UserFactory(DjangoModelFactory):
-    username = factory.Sequence("testuser{}".format)
-    email = factory.Sequence("testuser{}@company.com".format)
+    username = FuzzyText(length=5)
+    email = factory.Faker("ascii_company_email", locale="pl_PL")
 
     class Meta:
         model = User
