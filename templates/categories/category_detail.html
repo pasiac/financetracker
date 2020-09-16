@@ -1,4 +1,10 @@
 {% extends "base.html" %}
 {% block body %}
-    {{ object }}
+    <div>
+        <h1>{{ object.title }}</h1>
+        {% if chart_label and chart_data %}
+            <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
+            {% include 'pie_chart.html' %}
+        {% endif %}
+    </div>
 {% endblock %}

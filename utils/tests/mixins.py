@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 class TestUtilityMixin:
     STATUS_OK = 200
     STATUS_BAD_REQUEST = 200
-    STATUS_FORBIDDEN = 200
+    STATUS_FORBIDDEN = 302
     STATUS_REDIRECT = 302
     STATUS_NOT_FOUND = 404
     STATUS_UNAUTHORIZED = 401
