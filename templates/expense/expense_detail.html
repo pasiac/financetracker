@@ -9,6 +9,9 @@
     {% if object.recipe %}
         <p class="list-group-item">Recipe: {{ object.recipe }}</p>
     {% endif %}
+    <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
+    {% include 'pie_chart.html' %}
+
     <a class="btn btn-primary" href="{% url 'delete_expense' expense.id %}">Usun</a>
     <a class="btn btn-primary" href="{% url 'edit_expense' expense.id %}">Edytuj</a>
 {% endblock %}
