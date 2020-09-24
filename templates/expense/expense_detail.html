@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
-    <p class="list-group-item">Title: {{ object.title }}</p>
-    <p class="list-group-item">Price: {{ object.value }}</p>
-    <p class="list-group-item">Added: {{ object.date }}</p>
-    {% if object.category %}
-    <p class="list-group-item">Category: {{ object.category }}</p>
-    {% endif %}
-    {% if object.recipe %}
-        <p class="list-group-item">Recipe: {{ object.recipe }}</p>
-    {% endif %}
-    <canvas id="pie-chart" style="width: 30%;height: 30%;"></canvas>
-    {% include 'pie_chart.html' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-5">
+                <p class="list-group-item">Title: {{ object.title }}</p>
+                <p class="list-group-item">Price: {{ object.value }}</p>
+                <p class="list-group-item">Added: {{ object.date }}</p>
+                {% if object.category %}
+                <p class="list-group-item">Category: {{ object.category }}</p>
+                {% endif %}
+            </div>
+            <div class="col-xs-3">
+                {% if object.recipe %}
+                    <img src="{{ object.recipe.url }}" width="300" height="300" />
+                {% endif %}
+            </div>
+            <div class="col-xs-4">
+                <canvas width="300" height="300" id="pie-chart" ></canvas>
+                {% include 'pie_chart.html' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6"><a class="btn btn-primary" href="{% url 'delete_expense' expense.id %}">Usun</a></div>
+            <div class="col-xs-6"><a class="btn btn-primary" href="{% url 'edit_expense' expense.id %}">Edytuj</a></div>
+        </div>
 
-    <a class="btn btn-primary" href="{% url 'delete_expense' expense.id %}">Usun</a>
-    <a class="btn btn-primary" href="{% url 'edit_expense' expense.id %}">Edytuj</a>
 {% endblock %}
