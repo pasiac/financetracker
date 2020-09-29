@@ -8,6 +8,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from expense.filters import ExpenseFilter
 from expense.forms import ExpenseForm
 from expense.models import Expense
 
@@ -15,10 +16,16 @@ from expense.models import Expense
 class ExpenseListView(LoginRequiredMixin, ListView):
     model = Expense
     paginate_by = 10
-    context_object_name = "expenses"
 
     def get_queryset(self):
         return self.model.objects.filter(created_by=self.request.user).order_by("-date")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = ExpenseFilter(
+            self.request.GET, queryset=self.get_queryset()
+        )
+        return context
 
 
 class ExpenseDetailView(LoginRequiredMixin, DetailView):
