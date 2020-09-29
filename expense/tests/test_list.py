@@ -19,7 +19,7 @@ class TestList(TestCase, TestUtilityMixin):
 
     def test_user_can_see_his_expenses_after_log_in(self):
         self.__given_user_logged_in()
-        self.__given_expenses_created()
+        self.__given_expenses_created(title="test expense")
         response = self.client.get(self.url)
         self.__then_logged_in_user_expenses_shown(response)
 
@@ -35,11 +35,27 @@ class TestList(TestCase, TestUtilityMixin):
         self.assertEqual(self.STATUS_OK, response.status_code)
         self.assertContains(response, "&laquo;")
 
+    def test_returns_matched_item(self):
+        self.__given_user_logged_in()
+        self.__given_expenses_created(title="item")
+        url = f"{self.url}?title__icontains=item"
+        response = self.client.get(url)
+        self.assertEqual(self.STATUS_OK, response.status_code)
+        self.assertContains(response, "item")
+
+    def test_returns_no_items_if_no_one_match(self):
+        self.__given_user_logged_in()
+        self.__given_expenses_created(title="test")
+        url = f"{self.url}?title__icontains=noexisting"
+        response = self.client.get(url)
+        self.assertEqual(self.STATUS_OK, response.status_code)
+        self.assertNotContains(response, "test")
+
     def __given_user_logged_in(self):
         self.client.force_login(self.user, backend=None)
 
-    def __given_expenses_created(self):
-        ExpenseFactory.create(title="test expense", created_by=self.user)
+    def __given_expenses_created(self, **kwargs):
+        ExpenseFactory.create(**kwargs, created_by=self.user)
         ExpenseFactory.create(title="other user expense")
 
     def __then_logged_in_user_expenses_shown(self, response):
