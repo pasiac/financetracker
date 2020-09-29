@@ -7,3 +7,4 @@ redis
 amqp
 celery
 Pillow
+django-filter
