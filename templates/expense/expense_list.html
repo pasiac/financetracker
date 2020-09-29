@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load static %}
 {% block body %}
-<link rel="stylesheet" href="{% static 'css/expense.css' %}">
-
-    <h1>Yours expenses</h1>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/expense.css' %}">
+    
+    <h1 id="header">Yours expenses</h1>
     <button type="button" id="filters-button">Filter</button>
 
     <div class="show-onclick filters" style="display: none;">
