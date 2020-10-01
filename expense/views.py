@@ -55,6 +55,10 @@ class ExpenseDeleteView(LoginRequiredMixin, DeleteView):
     model = Expense
     success_url = reverse_lazy("expense_list")
 
+    # TODO: Create confirmation in js
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
 
 class ExpenseCreateView(LoginRequiredMixin, CreateView):
     model = Expense

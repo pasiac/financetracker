@@ -56,6 +56,10 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = Category
     success_url = reverse_lazy("category_list")
 
+    # TODO: Create confirmation in js
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
